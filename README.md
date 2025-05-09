@@ -1,4 +1,7 @@
-# BELAJAR-NLP
+# 📚 Natural Language Processing (NLP) Module
+
+Repositori ini berisi materi pembelajaran, jurnal, dan program praktikum (codelabs) untuk memahami dan menerapkan **Natural Language Processing (NLP)**, mulai dari konsep dasar hingga topik lanjutan seperti **Topic Modeling menggunakan LDA dan BERT**.
+
 <img src="Advance NLP Github.png" align="center" />
 
 Ebook ini dibuat untuk penyelesaian Tugas Mingguan Advance NLP pada Semester 3 Pascasarjana Teknik Informatika  Universitas Pamulang  | 2025   Dosen Pengampu :  DR. Ir AGUNG BUDI SUSANTO MM Dr. SAJARWO ANGGAI S.ST., M.T
@@ -16,11 +19,6 @@ Buku ini menyajikan panduan komprehensif untuk menguasai Natural Language Proces
 -	Proyek akhir untuk mengonsolidasi pembelajaran (end-to-end NLP system).
 
 Buku ini dirancang sebagai referensi lengkap untuk membangun solusi NLP yang robust, sekaligus memahami state-of-the-art teknologi di balik sistem seperti ChatGPT dan Google Translate.
-
-
-# 📚 Natural Language Processing (NLP) Module
-
-Repositori ini berisi materi pembelajaran, jurnal, dan program praktikum (codelabs) untuk memahami dan menerapkan **Natural Language Processing (NLP)**, mulai dari konsep dasar hingga topik lanjutan seperti **Topic Modeling menggunakan LDA dan BERT**.
 
 ---
 
@@ -72,5 +70,5 @@ Berisi kumpulan referensi akademik dan penelitian terkait NLP, yang digunakan se
 ## 🚀 Cara Menggunakan
 1. Clone repositori ini:
    ```bash
-   git clone https://github.com/username/repo-nlp.git
-   cd repo-nlp
+   git clone https://github.com/iwancilibur/BELAJAR-NLP.git
+   cd BELAJAR-NLP
