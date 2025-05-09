@@ -3,10 +3,7 @@
 Repositori ini berisi materi pembelajaran, jurnal, dan program praktikum (codelabs) untuk memahami dan menerapkan **Natural Language Processing (NLP)**, mulai dari konsep dasar hingga topik lanjutan seperti **Topic Modeling menggunakan LDA dan BERT**.
 
 <img src="Advance NLP Github.png" align="center" />
-
-Ebook ini dibuat untuk penyelesaian Tugas Mingguan Advance NLP pada Semester 3 Pascasarjana Teknik Informatika  Universitas Pamulang  | 2025   Dosen Pengampu :  DR. Ir AGUNG BUDI SUSANTO MM Dr. SAJARWO ANGGAI S.ST., M.T
-
-Buku ini menyajikan panduan komprehensif untuk menguasai Natural Language Processing (NLP) tingkat lanjut, mulai dari konsep dasar hingga implementasi di dunia nyata. Dengan pendekatan terstruktur, pembaca akan diajak menjelajahi seluruh tahapan pipeline NLP—dimulai dari pengenalan definisi, sejarah, dan tantangan NLP, hingga teknik modern berbasis deep learning dan transformers.
+Ebook ini menyajikan panduan komprehensif untuk menguasai Natural Language Processing (NLP) tingkat lanjut, mulai dari konsep dasar hingga implementasi di dunia nyata. Dengan pendekatan terstruktur, pembaca akan diajak menjelajahi seluruh tahapan pipeline NLP—dimulai dari pengenalan definisi, sejarah, dan tantangan NLP, hingga teknik modern berbasis deep learning dan transformers.
 
 # Target Pembaca:
 -	Pemula yang ingin memahami NLP dari dasar.
