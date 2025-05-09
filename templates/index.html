@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8 pagination">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Engine TF-IDF</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-pink: #ff2d75;
+            --dark-pink: #d61a5e;
+            --light-pink: #ff8fab;
+            --gradient-pink: linear-gradient(135deg, #ff2d75 0%, #ff8fab 100%);
+            --neon-glow: 0 0 15px rgba(255, 45, 117, 0.7);
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0f0f1a;
+            color: #f0f0f0;
+        }
+        
+        .search-card {
+            background: rgba(15, 15, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 45, 117, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .search-card:hover {
+            box-shadow: var(--neon-glow);
+            border-color: var(--primary-pink);
+        }
+        
+        .btn-primary {
+            background: var(--gradient-pink);
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--neon-glow);
+        }
+        
+        .input-group-text {
+            background: var(--gradient-pink);
+            border: none;
+        }
+        
+        .form-control, .form-select {
+            background-color: rgba(30, 30, 45, 0.8);
+            border: 1px solid rgba(255, 45, 117, 0.3);
+            color: white;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            background-color: rgba(30, 30, 45, 0.9);
+            border-color: var(--primary-pink);
+            box-shadow: var(--neon-glow);
+            color: white;
+        }
+        
+        .table {
+            --bs-table-bg: transparent;
+            --bs-table-color: #f0f0f0;
+            --bs-table-border-color: rgba(255, 45, 117, 0.2);
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: rgba(255, 45, 117, 0.1);
+        }
+        
+        .badge {
+            background-color: rgba(255, 45, 117, 0.2);
+            color: var(--light-pink);
+            font-weight: 500;
+        }
+        
+        /* Pagination Styles */
+        .pagination {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .pagination a, .pagination span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.5rem;
+            background-color: rgba(30, 30, 45, 0.8);
+            border: 1px solid rgba(255, 45, 117, 0.3);
+            color: #f0f0f0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .pagination a:hover {
+            background-color: rgba(255, 45, 117, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .pagination .active {
+            background: linear-gradient(135deg, #ff2d75 0%, #ff8fab 100%);
+            border-color: #ff2d75;
+            font-weight: 600;
+            box-shadow: 0 0 10px rgba(255, 45, 117, 0.5);
+        }
+        
+        .pagination .disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .logo-glow {
+            filter: drop-shadow(0 0 10px rgba(255, 45, 117, 0.7));
+        }
+        
+        .footer {
+            background: linear-gradient(90deg, #0f0f1a 0%, #1a1a2e 100%);
+            border-top: 1px solid rgba(255, 45, 117, 0.3);
+        }
+        
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            color: var(--primary-pink) !important;
+            transform: translateY(-3px);
+        }
+        
+        .no-results-icon {
+            color: rgba(255, 45, 117, 0.5);
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        
+        .glass-effect {
+            background: rgba(15, 15, 26, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px 0 rgba(255, 45, 117, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- Header with animated background -->
+    <div class="relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-pink-900/20 via-pink-800/10 to-pink-900/20"></div>
+        <div class="header text-center py-8 relative z-10">
+            
+            <div class="mt-4">
+                <div class="inline-block glass-effect px-6 py-2">
+                    <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-pink-400 to-pink-600 bg-clip-text text-transparent">
+                        <i class="fas fa-search mr-2"></i>TF-IDF Search Engine
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8 flex-grow">
+        <div class="max-w-6xl mx-auto">
+            <!-- Search Card -->
+            <div class="search-card glass-effect rounded-xl p-6 mb-10">
+                <h2 class="text-xl md:text-2xl font-semibold text-center mb-6 bg-gradient-to-r from-pink-300 to-pink-500 bg-clip-text text-transparent">
+                    <i class="fas fa-search mr-2"></i>Implementasi Search Engine Menggunakan Inverted Index Pada Artikel Berita
+                </h2>
+
+                <form method="POST" class="space-y-4 md:space-y-0 md:grid md:grid-cols-12 md:gap-4">
+                    <div class="md:col-span-6">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-pink-400">
+                                <i class="fas fa-keyboard"></i>
+                            </div>
+                            <input type="text" name="query" class="w-full pl-10 pr-4 py-3 rounded-lg bg-gray-900/70 border border-pink-900/50 focus:border-pink-500 focus:ring-2 focus:ring-pink-500/50 text-white placeholder-pink-300/70" 
+                                   placeholder="Masukkan kata kunci..." value="{{ query }}">
+                        </div>
+                    </div>
+                    <div class="md:col-span-4">
+                        <select name="kategori" class="w-full px-4 py-3 rounded-lg bg-gray-900/70 border border-pink-900/50 focus:border-pink-500 focus:ring-2 focus:ring-pink-500/50 text-white">
+                            {% for kat in kategori_options %}
+                                <option value="{{ kat }}" {% if kat == selected_kategori %}selected{% endif %}>{{ kat }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="md:col-span-2">
+                        <button type="submit" class="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-medium transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-pink-500/30">
+                            <i class="fas fa-search mr-2"></i>Cari
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Results Section -->
+            {% if results is not none and not results.empty %}
+                <div class="search-card glass-effect rounded-xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gradient-to-r from-pink-900/50 to-pink-800/50">
+                                <tr>
+                                    <th class="px-6 py-4 text-center font-semibold text-pink-300">No</th>
+                                    <th class="px-6 py-4 font-semibold text-pink-300">Judul</th>
+                                    <th class="px-6 py-4 font-semibold text-pink-300">Kategori</th>
+                                    <th class="px-6 py-4 text-center font-semibold text-pink-300">Similarity</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-pink-900/30">
+                                {% for idx, row in results.iterrows() %}
+                                    <tr class="hover:bg-pink-900/10 transition-colors duration-200">
+                                        <td class="px-6 py-4 text-center">{{ loop.index }}</td>
+                                        <td class="px-6 py-4 font-medium">{{ row["judul"] }}</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-pink-900/30 text-pink-300">
+                                                {{ row["kategori"] }}
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-center">
+                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-pink-900/30 text-pink-300">
+                                                {{ '{:.4f}'.format(row["similarity"]) if "similarity" in row else "-" }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="flex justify-center mt-8">
+                    {{ pagination.links }}
+                </div>
+            {% else %}
+                <div class="text-center py-16">
+                    <div class="no-results-icon inline-block mb-6">
+                        <i class="fas fa-search fa-4x text-pink-500/50"></i>
+                    </div>
+                    <h4 class="text-xl font-medium text-pink-300 mb-2">Belum ada hasil pencarian...</h4>
+                    <p class="text-pink-400/70">Masukkan kata kunci untuk memulai pencarian</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer py-6 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0 text-center md:text-left">
+                    <p class="text-pink-300/80">
+                        <i class="fas fa-copyright mr-1"></i> 2025 Advanced NLP - Iwan Muttaqin
+                    </p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="social-icon text-pink-300/80 hover:text-pink-400 text-xl">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#" class="social-icon text-pink-300/80 hover:text-pink-400 text-xl">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" class="social-icon text-pink-300/80 hover:text-pink-400 text-xl">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Remove Bootstrap JS as we're using Tailwind -->
+    <script>
+        // Add animation to search button on hover
+        document.querySelector('button[type="submit"]').addEventListener('mouseenter', function() {
+            this.classList.add('shadow-lg', 'shadow-pink-500/30');
+        });
+        
+        document.querySelector('button[type="submit"]').addEventListener('mouseleave', function() {
+            this.classList.remove('shadow-lg', 'shadow-pink-500/30');
+        });
+        
+        // Add glow effect to search card when input is focused
+        const inputs = document.querySelectorAll('input, select');
+        const searchCard = document.querySelector('.search-card');
+        
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                searchCard.style.boxShadow = '0 0 15px rgba(255, 45, 117, 0.7)';
+                searchCard.style.borderColor = '#ff2d75';
+            });
+            
+            input.addEventListener('blur', () => {
+                searchCard.style.boxShadow = '';
+                searchCard.style.borderColor = 'rgba(255, 45, 117, 0.3)';
+            });
+        });
+    </script>
+</body>
+</html>

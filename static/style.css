@@ -1,0 +1,89 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f8f9fa;
+    padding-bottom: 70px; /* Sesuaikan dengan tinggi footer */
+}
+
+h2 {
+    color: #0d6efd;
+    text-align: center;
+    font-size: 2rem;
+}
+
+.header {
+            background-color: #0033a0;
+            color: white;
+            padding: 10px;
+            text-align: left;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}
+
+.table-responsive {
+    margin-top: 20px;
+}
+
+.pagination-container {
+    margin: 30px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination {
+    display: flex;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+}
+
+.page-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-link {
+    display: block;
+    padding: 8px 16px;
+    color: #0d6efd;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
+
+.page-item:not(.active):not(.disabled) .page-link:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #fff;
+    border-color: #dee2e6;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 15px;
+    background-color: #0033a0;
+    color: white;
+    text-align: center;
+    font-size: 14px;
+    z-index: 1000; /* Memastikan footer selalu di atas elemen lain */
+    margin-top: 20px; /* Memberi jarak dari konten di atasnya */
+}
