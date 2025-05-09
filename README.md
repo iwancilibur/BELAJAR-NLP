@@ -1,5 +1,5 @@
 # BELAJAR-NLP
-<img src="Advance NLP Github.png" />
+<img src="Advance NLP Github.png" align="center" />
 
 Ebook ini dibuat untuk penyelesaian Tugas Mingguan Advance NLP pada Semester 3 Pascasarjana Teknik Informatika  Universitas Pamulang  | 2025   Dosen Pengampu :  DR. Ir AGUNG BUDI SUSANTO MM Dr. SAJARWO ANGGAI S.ST., M.T
 
