@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Prediksi</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: #fff; padding: 30px 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; }
+        h1 { color: #333; }
+        .result { margin-top: 20px; font-size: 18px; }
+        .text-input { font-style: italic; color: #555; }
+        .sentiment-positif { color: #28a745; font-weight: bold; }
+        .sentiment-negatif { color: #dc3545; font-weight: bold; }
+        a { display: inline-block; margin-top: 20px; text-decoration: none; background-color: #6c757d; color: white; padding: 10px 15px; border-radius: 5px; }
+        a:hover { background-color: #5a6268; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hasil Analisis Sentimen</h1>
+        <div class="result">
+            <p>Kalimat yang dianalisis:</p>
+            <p class="text-input">"{{ text }}"</p>
+            <p>Hasil Prediksi: 
+                {% if sentiment == 'Positif' %}
+                    <span class="sentiment-positif">{{ sentiment }}</span>
+                {% else %}
+                    <span class="sentiment-negatif">{{ sentiment }}</span>
+                {% endif %}
+            </p>
+            <p><small>Skor Probabilitas: {{ "%.4f"|format(score) }}</small></p>
+        </div>
+        <a href="/">Coba Lagi</a>
+    </div>
+</body>
+</html>

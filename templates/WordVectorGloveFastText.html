@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vector Space Explorer</title>
+    <!-- Memuat Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Memuat Font Inter dari Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Menggunakan font Inter untuk seluruh halaman */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0fdf4, #ecfdf5); /* Gradien latar belakang yang lembut */
+        }
+        /* Animasi untuk elemen yang muncul */
+        .animate-slide-in {
+            animation: slideIn 0.5s ease-out forwards;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        /* Styling untuk kartu (card) dengan efek hover */
+        .card {
+            background-color: white;
+            border-radius: 1.25rem; /* Sudut lebih bulat */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        /* Styling umum untuk tombol */
+        .btn {
+             display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        /* Styling untuk tombol utama */
+        .btn-primary {
+            background: linear-gradient(to right, #f97316, #ea580c);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(to right, #ea580c, #c2410c);
+        }
+        /* Styling untuk tombol sekunder */
+        .btn-secondary {
+            background: linear-gradient(to right, #16a34a, #15803d);
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: linear-gradient(to right, #15803d, #166534);
+        }
+        /* Indikator loading spinner */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 4px solid #4f46e5;
+            width: 32px;
+            height: 32px;
+            animation: spin 1s linear infinite;
+            display: none; /* Sembunyikan secara default */
+            margin: 1.5rem auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header Utama -->
+    <header class="bg-gradient-to-r from-green-600 to-orange-500 text-white py-10">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold animate-slide-in bg-clip-text text-transparent bg-gradient-to-r from-orange-200 to-green-100">VECTOR SPACE EXPLORER</h1>
+            <p class="mt-4 text-lg md:text-xl animate-slide-in" style="animation-delay: 0.2s;">Membongkar Dimensi Tersembunyi Bahasa dengan AI</p>
+            <div class="mt-6 animate-slide-in" style="animation-delay: 0.4s;">
+                <span class="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-orange-100 uppercase bg-black bg-opacity-20 rounded-full">Word2Vec</span>
+                <span class="inline-block px-3 py-1 mx-2 text-xs font-semibold tracking-wider text-green-100 uppercase bg-black bg-opacity-20 rounded-full">GloVe</span>
+                <span class="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-orange-100 uppercase bg-black bg-opacity-20 rounded-full">FastText</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Konten Utama -->
+    <main class="container mx-auto px-4 py-10 space-y-10">
+        
+        <!-- Kartu 1: Cari Kata Serupa & Visualisasi PCA -->
+        <section class="card animate-slide-in" style="animation-delay: 0.1s;">
+            <div class="p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3 text-orange-500" viewBox="0 0 20 20" fill="currentColor"><path d="M10 3a1 1 0 011 1v4a1 1 0 01-2 0V4a1 1 0 011-1zM4 10a1 1 0 011-1h4a1 1 0 010 2H5a1 1 0 01-1-1zM10 15a1 1 0 011-1h4a1 1 0 110 2h-4a1 1 0 01-1-1zM3 4a1 1 0 011-1h4a1 1 0 110 2H4a1 1 0 01-1-1zM15 9a1 1 0 011-1h.01a1 1 0 110 2H16a1 1 0 01-1-1zM9 15a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1zM3 14a1 1 0 011-1h.01a1 1 0 110 2H4a1 1 0 01-1-1z"/></svg>
+                    Analisis Kata Terkait & Visualisasi
+                </h2>
+                <form id="similar-form" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                        <div>
+                            <label for="similar-word" class="block text-sm font-medium text-gray-700">Masukkan Kata</label>
+                            <input list="vocab-list" type="text" id="similar-word" name="word" class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-orange-500 focus:border-orange-500" required placeholder="Contoh: model">
+                        </div>
+                        <div>
+                            <label for="similar-model" class="block text-sm font-medium text-gray-700">Pilih Model</label>
+                            <select id="similar-model" name="model" class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-orange-500 focus:border-orange-500">
+                                <option value="word2vec">Word2Vec</option>
+                                <option value="glove">GloVe</option>
+                                <option value="fasttext">FastText</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-full">Analisis</button>
+                    </div>
+                </form>
+                <div id="similar-loader" class="loader"></div>
+                <div id="similar-results" class="mt-6 hidden">
+                    <div id="similar-error" class="text-red-600 bg-red-50 p-4 rounded-xl border border-red-200 font-medium hidden mb-4"></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div id="similar-list-container">
+                             <h3 class="text-xl font-semibold text-gray-800">Kata-kata Terkait</h3>
+                            <ul id="similar-list" class="mt-3 space-y-2"></ul>
+                        </div>
+                        <div id="plot-container">
+                             <h3 class="text-xl font-semibold text-gray-800">Visualisasi Ruang Vektor (PCA)</h3>
+                            <img id="pca-plot" src="" alt="Plot PCA" class="mt-3 rounded-lg shadow-md border border-gray-200">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kartu 2: Hitung Kesamaan -->
+        <section class="card animate-slide-in" style="animation-delay: 0.2s;">
+            <div class="p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.153.01-.229.015.09.364.16.742.229 1.132 0 0 0 0 0 0V4zM12.004 11.218c-.37.37-1.02.37-1.389 0a.5.5 0 00-.625.791 2.5 2.5 0 103.239-2.203.5.5 0 00-.625.79 1.5 1.5 0 01-.6.422zm-2.01-7.233A5.98 5.98 0 0010 4V2.015a8.01 8.01 0 014.118 4.821 5.984 5.984 0 00-4.122-2.85zM14.95 13.5a.5.5 0 01.5.5v2a.5.5 0 01-1 0v-2a.5.5 0 01.5-.5zm-5-13a.5.5 0 01.5.5v2a.5.5 0 01-1 0v-2a.5.5 0 01.5-.5zM5.05 13.5a.5.5 0 01.5.5v2a.5.5 0 01-1 0v-2a.5.5 0 01.5-.5z" clip-rule="evenodd"/></svg>
+                    Hitung Kesamaan Semantik
+                </h2>
+                <form id="similarity-form" class="space-y-4">
+                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                         <div>
+                            <label for="similarity-word1" class="block text-sm font-medium text-gray-700">Kata Pertama</label>
+                            <input list="vocab-list" type="text" id="similarity-word1" name="word1" class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500" required placeholder="Contoh: vektor">
+                        </div>
+                        <div>
+                            <label for="similarity-word2" class="block text-sm font-medium text-gray-700">Kata Kedua</label>
+                            <input list="vocab-list" type="text" id="similarity-word2" name="word2" class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500" required placeholder="Contoh: arsitektur">
+                        </div>
+                        <div>
+                           <label for="similarity-model" class="block text-sm font-medium text-gray-700">Pilih Model</label>
+                            <select id="similarity-model" name="model" class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                                <option value="word2vec">Word2Vec</option>
+                                <option value="glove">GloVe</option>
+                                <option value="fasttext">FastText</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-secondary w-full">Hitung</button>
+                    </div>
+                </form>
+                <div id="similarity-loader" class="loader"></div>
+                 <div id="similarity-results" class="mt-6 hidden bg-green-50 p-6 rounded-xl border border-green-200">
+                     <div id="similarity-error" class="text-red-600 font-medium hidden mb-4"></div>
+                     <p class="text-xl text-center">Skor Kesamaan: <strong id="similarity-score" class="text-2xl text-green-600"></strong></p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- Datalist untuk autocomplete input, diisi oleh Jinja2 dari Flask -->
+    <datalist id="vocab-list">
+        {% for word in vocabulary %}
+            <option value="{{ word }}">
+        {% endfor %}
+    </datalist>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-r from-green-800 to-orange-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm tracking-wider">© 2025 VECTOR SPACE EXPLORER | MEMETAKAN MAKNA DALAM DIMENSI TERSEMBUNYI</p>
+        </div>
+    </footer>
+
+    <!-- Logika JavaScript (tanpa jQuery) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Elemen untuk Form "Kata Terkait" ---
+            const similarForm = document.getElementById('similar-form');
+            const similarLoader = document.getElementById('similar-loader');
+            const similarResults = document.getElementById('similar-results');
+            const similarError = document.getElementById('similar-error');
+            const similarListContainer = document.getElementById('similar-list-container');
+            const plotContainer = document.getElementById('plot-container');
+            const similarList = document.getElementById('similar-list');
+            const pcaPlot = document.getElementById('pca-plot');
+
+            // --- Elemen untuk Form "Hitung Kesamaan" ---
+            const similarityForm = document.getElementById('similarity-form');
+            const similarityLoader = document.getElementById('similarity-loader');
+            const similarityResults = document.getElementById('similarity-results');
+            const similarityError = document.getElementById('similarity-error');
+            const similarityScore = document.getElementById('similarity-score');
+            
+            // --- Event Listener untuk Form "Kata Terkait" ---
+            similarForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                similarResults.classList.add('hidden');
+                similarLoader.style.display = 'block';
+                similarError.classList.add('hidden');
+
+                const formData = new FormData(similarForm);
+                // Pilih model yang sama untuk kedua input kata
+                formData.set('model', document.getElementById('similar-model').value);
+
+                try {
+                    const response = await fetch('/get_similar', { method: 'POST', body: formData });
+                    const data = await response.json();
+
+                    if (data.success) {
+                        // Tampilkan hasil jika sukses
+                        similarList.innerHTML = ''; // Bersihkan daftar lama
+                        data.similar_words.forEach(item => {
+                            const li = document.createElement('li');
+                            li.className = 'bg-gray-100 p-3 rounded-lg flex justify-between items-center';
+                            li.innerHTML = `<span>${item[0]}</span><span class="font-semibold text-orange-600">${item[1].toFixed(4)}</span>`;
+                            similarList.appendChild(li);
+                        });
+
+                        // Tampilkan plot PCA jika ada path-nya
+                        if (data.plot_path) {
+                            // Tambahkan timestamp untuk mencegah browser menggunakan cache gambar lama
+                            pcaPlot.src = `${data.plot_path}?t=${new Date().getTime()}`;
+                            plotContainer.classList.remove('hidden');
+                        } else {
+                            plotContainer.classList.add('hidden');
+                        }
+                        similarListContainer.classList.remove('hidden');
+                        similarError.classList.add('hidden');
+                    } else {
+                        // Tampilkan pesan error
+                        similarError.textContent = data.error || 'Terjadi kesalahan yang tidak diketahui.';
+                        similarError.classList.remove('hidden');
+                        similarListContainer.classList.add('hidden');
+                        plotContainer.classList.add('hidden');
+                    }
+                } catch (error) {
+                    // Tangani error jaringan atau server
+                    similarError.textContent = 'Gagal terhubung ke server. Silakan coba lagi.';
+                    similarError.classList.remove('hidden');
+                    similarListContainer.classList.add('hidden');
+                    plotContainer.classList.add('hidden');
+                } finally {
+                    // Selalu sembunyikan loader dan tampilkan area hasil
+                    similarLoader.style.display = 'none';
+                    similarResults.classList.remove('hidden');
+                }
+            });
+
+            // --- Event Listener untuk Form "Hitung Kesamaan" ---
+            similarityForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                similarityResults.classList.add('hidden');
+                similarityLoader.style.display = 'block';
+                similarityError.classList.add('hidden');
+
+                const formData = new FormData(similarityForm);
+                 // Pastikan model dari form ini yang digunakan
+                formData.set('model', document.getElementById('similarity-model').value);
+
+                try {
+                    const response = await fetch('/get_similarity', { method: 'POST', body: formData });
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        similarityScore.textContent = data.similarity.toFixed(4);
+                        similarityError.classList.add('hidden');
+                    } else {
+                        similarityError.textContent = data.error || 'Gagal menghitung kesamaan.';
+                        similarityError.classList.remove('hidden');
+                        similarityScore.textContent = '';
+                    }
+                } catch (error) {
+                    similarityError.textContent = 'Gagal terhubung ke server. Silakan coba lagi.';
+                    similarityError.classList.remove('hidden');
+                    similarityScore.textContent = '';
+                } finally {
+                    similarityLoader.style.display = 'none';
+                    similarityResults.classList.remove('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

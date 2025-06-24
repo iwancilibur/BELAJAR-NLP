@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisis Sentimen BERT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            margin: 10px 0;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        .sentiment {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .negative { color: #ff4d4d; }
+        .neutral { color: #ffcc00; }
+        .positive { color: #66cc66; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Analisis Sentimen dengan BERT</h1>
+        <form method="POST">
+            <textarea name="text" placeholder="Masukkan teks di sini...">{{ text if text else '' }}</textarea>
+            <button type="submit">Analisis</button>
+        </form>
+        
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        {% if result %}
+            <div class="result">
+                <h3>Hasil Analisis:</h3>
+                <p class="sentiment {{ 'negative' if 'Negatif' in result else 'positive' if 'Positif' in result else 'neutral' }}">
+                    {{ result }}
+                </p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
